@@ -261,6 +261,8 @@ typedef struct _IARM_BUS_NetSrvMgr_Iface_EventData_t {
             Unregister("getPublicIP");
             Unregister("setStunEndPoint");
 
+            Unregister("Wifi.getIP");
+            Unregister("Ethernet.getIP");
             Network::_instance = nullptr;
         }
 
