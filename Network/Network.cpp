@@ -141,6 +141,8 @@ typedef struct _IARM_BUS_NetSrvMgr_Iface_EventData_t {
             registerMethod("stopConnectivityMonitoring", &Network::stopConnectivityMonitoring, this);
             registerMethod("getPublicIP", &Network::getPublicIP, this);
             registerMethod("setStunEndPoint", &Network::setStunEndPoint, this);
+            Register("Wifi.getIP", &Network::getIPSettingsWiFi, this);
+            Register("Ethernet.getIP", &Network::getIPSettingsEth, this);
 
             const char * script1 = R"(grep DEVICE_TYPE /etc/device.properties | cut -d "=" -f2 | tr -d '\n')";
             m_isHybridDevice = Utils::cRunScript(script1).substr();
@@ -951,6 +953,26 @@ typedef struct _IARM_BUS_NetSrvMgr_Iface_EventData_t {
             }
 
             returnResponse(result)
+        }
+
+        uint32_t Network::getIPSettingsWiFi(const JsonObject& parameters, JsonObject& response)
+        {
+                JsonObject internal;
+                string ipversion = "";
+                internal ["interface"] = "WIFI";
+                getDefaultStringParameter("ipversion", ipversion,"");
+                internal ["ipversion"] = ipversion;
+                return getIPSettings2(internal, response);
+        }
+
+        uint32_t Network::getIPSettingsEth(const JsonObject& parameters, JsonObject& response)
+        {
+                JsonObject internal;
+                string ipversion = "";
+                internal ["interface"] = "ETHERNET";
+                getDefaultStringParameter("ipversion", ipversion, "");
+                internal ["ipversion"] = ipversion;
+                return getIPSettings2(internal, response);
         }
 
         uint32_t Network::getIPSettings(const JsonObject& parameters, JsonObject& response)
