@@ -3953,7 +3953,11 @@ namespace WPEFramework {
                     }
 
                     LOGINFO("ARC Routing - %d \n", arcEnable);
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "setupARCRouting", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "setupARCRouting", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
+
                     if (!hdmiCecSinkResult["success"].Boolean()) {
 			success = false;
                         LOGERR("HdmiCecSink Plugin returned error\n");
@@ -3984,7 +3988,10 @@ namespace WPEFramework {
                     JsonObject hdmiCecSinkResult;
                     JsonObject param;
 
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "getEnabled", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "getEnabled", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
 
 		    cecEnable = hdmiCecSinkResult["enabled"].Boolean();
 		    LOGINFO("get-cecEnabled [%d]\n",cecEnable);
@@ -4016,7 +4023,10 @@ namespace WPEFramework {
                     JsonObject hdmiCecSinkResult;
                     JsonObject param;
 
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "getAudioDeviceConnectedStatus", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "getAudioDeviceConnectedStatus", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
 
                     hdmiAudioDeviceDetected = hdmiCecSinkResult["connected"].Boolean();
                     LOGINFO("getAudioDeviceConnectedStatus [%d]\n",hdmiAudioDeviceDetected);
@@ -4049,7 +4059,11 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Send Audio Device Power On !!!\n");
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "sendAudioDevicePowerOnMessage", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "sendAudioDevicePowerOnMessage", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
+
                     if (!hdmiCecSinkResult["success"].Boolean()) {
                         success = false;
                         LOGERR("HdmiCecSink Plugin returned error\n");
@@ -4081,7 +4095,11 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Requesting Short Audio Descriptor \n");
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "requestShortAudioDescriptor", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "requestShortAudioDescriptor", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
+
                     if (!hdmiCecSinkResult["success"].Boolean()) {
                         success = false;
                         LOGERR("HdmiCecSink Plugin returned error\n");
@@ -4113,7 +4131,11 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Requesting Audio Device power Status \n");
-                    m_client->Invoke<JsonObject, JsonObject>(2000, "requestAudioDevicePowerStatus", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "requestAudioDevicePowerStatus", param, hdmiCecSinkResult);
+                    if (status != Core::ERROR_NONE) {
+                        LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
+                    }
+
                     if (!hdmiCecSinkResult["success"].Boolean()) {
                         success = false;
                         LOGERR("HdmiCecSink Plugin returned error\n");
@@ -4397,12 +4419,12 @@ namespace WPEFramework {
         {
             if(m_client == nullptr)
             {
-                string token;
+                string token = "";
 
                 // TODO: use interfaces and remove token
                 auto security = m_service->QueryInterfaceByCallsign<PluginHost::IAuthenticate>("SecurityAgent");
                 if (security != nullptr) {
-                    string payload = "http://localhost";
+                    string payload = "http://127.0.0.1";
                     if (security->CreateToken(
                             static_cast<uint16_t>(payload.length()),
                             reinterpret_cast<const uint8_t*>(payload.c_str()),
@@ -4418,8 +4440,12 @@ namespace WPEFramework {
                 }
 
                 string query = "token=" + token;
+
+                if (token.length())
+                    LOGINFO("The token that we received is not empty\n");
+
                 Core::SystemInfo::SetEnvironment(_T("THUNDER_ACCESS"), (_T("127.0.0.1:9998")));
-                m_client = new WPEFramework::JSONRPC::LinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), (_T(HDMICECSINK_CALLSIGN_VER)), false, query);
+                m_client = new WPEFramework::JSONRPC::SmartLinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), (_T(HDMICECSINK_CALLSIGN_VER)), query);
                 LOGINFO("DisplaySettings getHdmiCecSinkPlugin init m_client\n");
             }
         }
