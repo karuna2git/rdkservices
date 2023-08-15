@@ -4445,7 +4445,7 @@ namespace WPEFramework {
                     LOGINFO("The token that we received is not empty\n");
 
                 Core::SystemInfo::SetEnvironment(_T("THUNDER_ACCESS"), (_T("127.0.0.1:9998")));
-                m_client = new WPEFramework::JSONRPC::SmartLinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), (_T(HDMICECSINK_CALLSIGN_VER)), query);
+                m_client = new WPEFramework::JSONRPC::LinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), _T(""), false, query);
                 LOGINFO("DisplaySettings getHdmiCecSinkPlugin init m_client\n");
             }
         }
@@ -5226,6 +5226,7 @@ void DisplaySettings::sendMsgThread()
                     m_clientRegisteredEventNames.clear();
 
                     LOGINFO ("deleting m_client \n");
+                    delete m_client; m_client = nullptr;
                 }
             }
         }
