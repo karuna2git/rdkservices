@@ -5226,7 +5226,6 @@ void DisplaySettings::sendMsgThread()
                     m_clientRegisteredEventNames.clear();
 
                     LOGINFO ("deleting m_client \n");
-                    delete m_client; m_client = nullptr;
                 }
             }
         }
