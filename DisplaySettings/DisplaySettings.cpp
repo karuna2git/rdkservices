@@ -4445,9 +4445,23 @@ namespace WPEFramework {
                     LOGINFO("The token that we received is not empty\n");
 
                 Core::SystemInfo::SetEnvironment(_T("THUNDER_ACCESS"), (_T("127.0.0.1:9998")));
-                LOGINFO("SSSSSS: DisplaySettings getHdmiCecSinkPlugin init calling\n");
-                m_client = new WPEFramework::JSONRPC::LinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), _T(""), false, query);
-                LOGINFO("SSSSSS: DisplaySettings getHdmiCecSinkPlugin init called\n");
+                int lcount = 0;
+                while(lcount < 5)
+                {
+                    lcount++;
+                    m_client = new WPEFramework::JSONRPC::LinkType<Core::JSON::IElement>(_T(HDMICECSINK_CALLSIGN_VER), _T(""), false, query);
+                    if (m_client->isOperational())
+                        break;
+                    else
+                    {
+                        delete m_client;
+                        m_client = NULL;
+                        usleep(250000);
+                        LOGINFO("SSSSSS: DisplaySettings getHdmiCecSinkPlugin init failed at (%d) attempt; Recreating\n", lcount);
+                    }
+
+                    LOGINFO("SSSSSS: DisplaySettings getHdmiCecSinkPlugin init called\n");
+                }
             }
         }
 
