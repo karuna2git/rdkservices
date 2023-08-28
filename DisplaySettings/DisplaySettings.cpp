@@ -3953,7 +3953,7 @@ namespace WPEFramework {
                     }
 
                     LOGINFO("ARC Routing - %d \n", arcEnable);
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "setupARCRouting", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "setupARCRouting", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -3988,7 +3988,7 @@ namespace WPEFramework {
                     JsonObject hdmiCecSinkResult;
                     JsonObject param;
 
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "getEnabled", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "getEnabled", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -4023,7 +4023,7 @@ namespace WPEFramework {
                     JsonObject hdmiCecSinkResult;
                     JsonObject param;
 
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "getAudioDeviceConnectedStatus", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "getAudioDeviceConnectedStatus", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -4059,7 +4059,7 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Send Audio Device Power On !!!\n");
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "sendAudioDevicePowerOnMessage", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "sendAudioDevicePowerOnMessage", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -4095,7 +4095,7 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Requesting Short Audio Descriptor \n");
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "requestShortAudioDescriptor", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "requestShortAudioDescriptor", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -4131,7 +4131,7 @@ namespace WPEFramework {
                     JsonObject param;
 
                     LOGINFO("Requesting Audio Device power Status \n");
-                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(2000, "requestAudioDevicePowerStatus", param, hdmiCecSinkResult);
+                    uint32_t status = m_client->Invoke<JsonObject, JsonObject>(5000, "requestAudioDevicePowerStatus", param, hdmiCecSinkResult);
                     if (status != Core::ERROR_NONE) {
                         LOGERR("Communication to HDMICecSink Plugin failed and returned error: %d\n", status);
                     }
@@ -4718,31 +4718,31 @@ void DisplaySettings::sendMsgThread()
 	    if(err == Core::ERROR_NONE) {
                 /* Register handlers for Event reception. */
                 if(strcmp(eventName, HDMICECSINK_ARC_INITIATION_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onARCInitiationEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_ARC_TERMINATION_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onARCTerminationEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_SHORT_AUDIO_DESCRIPTOR_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onShortAudioDescriptorEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_SYSTEM_AUDIO_MODE_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onSystemAudioModeEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_AUDIO_DEVICE_CONNECTED_STATUS_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onAudioDeviceConnectedStatusEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_CEC_ENABLED_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onCecEnabledEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
                 } else if(strcmp(eventName, HDMICECSINK_AUDIO_DEVICE_POWER_STATUS_EVENT) == 0) {
-                    err =m_client->Subscribe<JsonObject>(1000, eventName
+                    err =m_client->Subscribe<JsonObject>(5000, eventName
                             , &DisplaySettings::onAudioDevicePowerStatusEventHandler, this);
                     m_clientRegisteredEventNames.push_back(eventName);
 		} else {
