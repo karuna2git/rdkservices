@@ -58,7 +58,7 @@ namespace Plugin {
         _service->Register(&_notification);
 
         SAPLOG_WARNING("SystemAudioPlayer::Initialize - 0");
-        _sap = _service->Root<Exchange::ISystemAudioPlayer>(_connectionId, 5000, _T("SystemAudioPlayerImplementation"));
+        _sap = _service->Root<Exchange::ISystemAudioPlayer>(_connectionId, 25000, _T("SystemAudioPlayerImplementation"));
 
         std::string message;
         if(_sap != nullptr) {
