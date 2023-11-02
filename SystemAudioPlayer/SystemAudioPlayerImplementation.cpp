@@ -57,6 +57,7 @@ namespace Plugin {
 
     uint32_t SystemAudioPlayerImplementation::Configure(PluginHost::IShell* service)
     {
+                SAPLOG_INFO("SAP: SystemAudioPlayerImplementation Configure\n");
         return Core::ERROR_NONE;
     }
 
@@ -72,7 +73,7 @@ namespace Plugin {
 
         _adminLock.Unlock();
 
-        TRACE_L1("Registered a sink on the browser %p", sink);
+        SAPLOG_INFO("Registered a sink on the browser %p", sink);
     }
 
     void SystemAudioPlayerImplementation::Unregister(Exchange::ISystemAudioPlayer::INotification* sink)
@@ -87,7 +88,7 @@ namespace Plugin {
         if (index != _notificationClients.end()) {
             (*index)->Release();
             _notificationClients.erase(index);
-            TRACE_L1("Unregistered a sink on the browser %p", sink);
+            SAPLOG_INFO("Unregistered a sink on the browser %p", sink);
         }
 
         _adminLock.Unlock();

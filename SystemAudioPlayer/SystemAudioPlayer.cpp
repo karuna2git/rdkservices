@@ -57,12 +57,14 @@ namespace Plugin {
 
         _service->Register(&_notification);
 
+        SAPLOG_WARNING("SystemAudioPlayer::Initialize - 0");
         _sap = _service->Root<Exchange::ISystemAudioPlayer>(_connectionId, 5000, _T("SystemAudioPlayerImplementation"));
 
         std::string message;
         if(_sap != nullptr) {
             ASSERT(_connectionId != 0);
 
+            SAPLOG_WARNING("SystemAudioPlayer::Initialize - 1");
             _sap->Configure(_service);
             _sap->Register(&_notification);
             RegisterAll();
@@ -70,6 +72,7 @@ namespace Plugin {
             message = _T("SystemAudioPlayer could not be instantiated.");
             _service->Unregister(&_notification);
             _service = nullptr;
+            SAPLOG_WARNING("SystemAudioPlayer::Initialize - 2");
         }
 
         return message;
@@ -80,6 +83,7 @@ namespace Plugin {
         ASSERT(_service == service);
         ASSERT(_sap != nullptr);
 
+        SAPLOG_WARNING("SystemAudioPlayer::Deinitialize - 3");
         if (!_sap)
             return;
 
@@ -88,7 +92,7 @@ namespace Plugin {
 
         if(_sap->Release() != Core::ERROR_DESTRUCTION_SUCCEEDED) {
             ASSERT(_connectionId != 0);
-            TRACE_L1("SystemAudioPlayer Plugin is not properly destructed. %d", _connectionId);
+            SAPLOG_WARNING("SystemAudioPlayer Plugin is not properly destructed. %d", _connectionId);
 
             RPC::IRemoteConnection* connection(_service->RemoteConnection(_connectionId));
 
@@ -109,6 +113,7 @@ namespace Plugin {
             , _notification(this)
             , _apiVersionNumber(API_VERSION_NUMBER)
     {
+        SAPLOG_WARNING("SystemAudioPlayer::SystemAudioPlayer - 3");
     }
 
     SystemAudioPlayer::~SystemAudioPlayer()

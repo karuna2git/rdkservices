@@ -24,6 +24,7 @@ namespace Plugin {
 
     void SystemAudioPlayer::RegisterAll()
     {
+	SAPLOG_WARNING("SystemAudioPlayer::RegisterAll - 1");
         Register("open", &SystemAudioPlayer::Open, this);        
         Register("play", &SystemAudioPlayer::Play, this);
         Register("playbuffer", &SystemAudioPlayer::PlayBuffer, this);
@@ -41,37 +42,47 @@ namespace Plugin {
    
     uint32_t SystemAudioPlayer::Open(const JsonObject& parameters, JsonObject& response)
     {
+	SAPLOG_WARNING("SystemAudioPlayer::Open - 1");
         if(_sap) {
+	    SAPLOG_WARNING("SystemAudioPlayer::Open - 2");
             string params, result;
             parameters.ToString(params);
             uint32_t ret= _sap->Open(params, result);
             response.FromString(result);
+	SAPLOG_WARNING("SystemAudioPlayer::Open - 3");
             return ret;
         }
+	    SAPLOG_WARNING("SystemAudioPlayer::Open - 4");
         return Core::ERROR_NONE;
     }
 
      uint32_t SystemAudioPlayer::Config(const JsonObject& parameters, JsonObject& response)
     {
         if(_sap) {
+		SAPLOG_WARNING("SystemAudioPlayer::Config - 1");
             string params, result;
             parameters.ToString(params);
             uint32_t ret= _sap->Config(params, result);
             response.FromString(result);
+		SAPLOG_WARNING("SystemAudioPlayer::Config - 2");
             return ret;
         }
+	    SAPLOG_WARNING("SystemAudioPlayer::Config - 3");
         return Core::ERROR_NONE;
     }
 
     uint32_t SystemAudioPlayer::GetPlayerSessionId(const JsonObject& parameters, JsonObject& response)
     {
         if(_sap) {
+		SAPLOG_WARNING("SystemAudioPlayer::GetPlayerSessionId - 1");
             string params, result;
             parameters.ToString(params);
             uint32_t ret= _sap->GetPlayerSessionId(params, result);
             response.FromString(result);
+		SAPLOG_WARNING("SystemAudioPlayer::GetPlayerSessionId - 2");
             return ret;
         }
+	    SAPLOG_WARNING("SystemAudioPlayer::GetPlayerSessionId - 3");
         return Core::ERROR_NONE;
     }
 
@@ -114,12 +125,15 @@ namespace Plugin {
     uint32_t SystemAudioPlayer::Close(const JsonObject& parameters ,JsonObject& response)
     {
         if(_sap) {
+		SAPLOG_WARNING("SystemAudioPlayer::Close - 1");
             string params,result;
             parameters.ToString(params);
             uint32_t ret = _sap->Close(params, result);
             response.FromString(result);
+		SAPLOG_WARNING("SystemAudioPlayer::Close - 2");
             return ret;
         }
+	    SAPLOG_WARNING("SystemAudioPlayer::Close - 3");
         return Core::ERROR_NONE;
     }
 
