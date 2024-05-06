@@ -1461,7 +1461,6 @@ typedef struct _IARM_BUS_NetSrvMgr_Iface_EventData_t {
             m_defInterfaceCache = "";
 
             sendNotify("onConnectionStatusChanged", params);
-            connectivityMonitor.signalConnectivityMonitor();
         }
 
         void Network::onInternetStatusChange(nsm_internetState InternetConnectionState)
