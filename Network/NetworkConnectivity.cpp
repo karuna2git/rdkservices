@@ -529,6 +529,31 @@ namespace WPEFramework {
                     /* change the timeout value to 5 sec so that next check will happens with in 5 sec */
                     tempTimeout = 5;
                     LOGINFO("notification count change to %d timeout %d ...", notifyWaitCount, tempTimeout);
+
+                    /* Run some traceroute command to get the results for tracking */
+                    {
+                        LOGINFO("RUN_TRACEROUTE_TEST for couple of urls...\n");
+                        char command1[256] = "traceroute -T -p 80 connectivitycheck.comcast.com";
+                        char command2[256] = "traceroute -T -p 80 clients3.google.com";
+                        char command3[256] = "traceroute -T -p 443 res-api.svc.thor.comcast.com";
+                        char command4[256] = "traceroute -T -p 443 cdn.thor.comcast.com";
+                        string output1 = "";
+                        string output2 = "";
+                        string output3 = "";
+                        string output4 = "";
+                        bool result;
+                        NetUtils::execCmd(command1, output1, &result);
+                        NetUtils::execCmd(command2, output2, &result);
+                        NetUtils::execCmd(command3, output3, &result);
+                        NetUtils::execCmd(command4, output4, &result);
+
+                        LOGINFO("traceroute output 1 $$$%s$$# ...", output1.c_str());
+                        LOGINFO("traceroute output 2 $$$%s$$# ...", output2.c_str());
+                        LOGINFO("traceroute output 3 $$$%s$$# ...", output3.c_str());
+                        LOGINFO("traceroute output 4 $$$%s$$# ...", output4.c_str());
+
+
+                    }
                 }
                 else
                 {
